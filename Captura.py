@@ -1,6 +1,6 @@
 try:
     from pynput import keyboard   
-    import os ,  socket ,  shutil , pathlib
+    import os  ,  shutil , pathlib
     from datetime import datetime
     import winreg
 except:
